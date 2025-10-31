@@ -6,6 +6,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 
 import 'components/components.dart';
 import 'config.dart';
@@ -23,6 +24,8 @@ class BrickBreaker extends FlameGame
         );
 
   final ValueNotifier<int> score = ValueNotifier(0);
+  final ValueNotifier<int> highScore = ValueNotifier(0);
+  bool newHighScoreAchieved = false;
   final rand = math.Random();
   double get width => size.x;
   double get height => size.y;
@@ -35,6 +38,11 @@ class BrickBreaker extends FlameGame
       case PlayState.welcome:
       case PlayState.gameOver:
       case PlayState.won:
+        if (score.value > highScore.value) {
+          highScore.value = score.value;
+          Hive.box('bricked').put('highScore', highScore.value);
+          newHighScoreAchieved = true;
+        }
         overlays.add(playState.name);
       case PlayState.playing:
         overlays.remove(PlayState.welcome.name);
@@ -51,6 +59,8 @@ class BrickBreaker extends FlameGame
 
     world.add(PlayArea());
 
+    highScore.value = Hive.box('bricked').get('highScore', defaultValue: 0);
+
     playState = PlayState.welcome;
   }
 
@@ -63,6 +73,7 @@ class BrickBreaker extends FlameGame
 
     playState = PlayState.playing;
     score.value = 0;
+    newHighScoreAchieved = false;
 
     world.add(
       Ball(
