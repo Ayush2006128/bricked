@@ -67,7 +67,7 @@ class _GameAppState extends State<GameApp> {
                                     title: 'G A M E   O V E R',
                                     subtitle: 'Tap to Play Again',
                                     newHighScore: (game as BrickBreaker).newHighScoreAchieved
-                                        ? (game as BrickBreaker).highScore.value
+                                        ? (game).highScore.value
                                         : null,
                                   ),
                               PlayState.won.name: (context, game) =>
@@ -75,7 +75,7 @@ class _GameAppState extends State<GameApp> {
                                     title: 'Y O U   W O N ! ! !',
                                     subtitle: 'Tap to Play Again',
                                     newHighScore: (game as BrickBreaker).newHighScoreAchieved
-                                        ? (game as BrickBreaker).highScore.value
+                                        ? (game).highScore.value
                                         : null,
                                   ),
                             },
