@@ -2,6 +2,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 
 import '../brick_breaker.dart';
 import 'bat.dart';
@@ -54,7 +55,8 @@ class Ball extends CircleComponent
               game.playState = PlayState.gameOver;
             },
           ),
-        );                                                      // To here.
+        );
+        Vibrate.feedback(FeedbackType.error); // Provides haptic feedback
       }
     } else if (other is Bat) {
       velocity.y = -velocity.y;

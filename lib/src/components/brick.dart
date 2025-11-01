@@ -1,7 +1,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 import '../brick_breaker.dart';
 import '../config.dart';
 import 'ball.dart';
@@ -30,6 +30,8 @@ class Brick extends RectangleComponent
 
     if (game.world.children.query<Brick>().length == 1) {
       game.playState = PlayState.won;
+      // vibrate the device with two beeps
+      Vibrate.feedback(FeedbackType.success); // Provides haptic feedback
       game.world.removeAll(game.world.children.query<Ball>());
       game.world.removeAll(game.world.children.query<Bat>());
     }
