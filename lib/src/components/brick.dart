@@ -1,7 +1,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:flame_audio/flame_audio.dart';
 import '../brick_breaker.dart';
 import '../config.dart';
 import 'ball.dart';
@@ -27,11 +27,11 @@ class Brick extends RectangleComponent
     super.onCollisionStart(intersectionPoints, other);
     removeFromParent();
     game.score.value++;                                         // Add this line
+    FlameAudio.play("collide-brick.wav");
 
     if (game.world.children.query<Brick>().length == 1) {
       game.playState = PlayState.won;
-      // vibrate the device with two beeps
-      Vibrate.feedback(FeedbackType.success); // Provides haptic feedback
+      FlameAudio.play("win.wav");
       game.world.removeAll(game.world.children.query<Ball>());
       game.world.removeAll(game.world.children.query<Bat>());
     }

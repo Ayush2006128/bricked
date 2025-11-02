@@ -1,8 +1,8 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_vibrate/flutter_vibrate.dart';
 
 import '../brick_breaker.dart';
 import 'bat.dart';
@@ -56,13 +56,14 @@ class Ball extends CircleComponent
             },
           ),
         );
-        Vibrate.feedback(FeedbackType.error); // Provides haptic feedback
+        FlameAudio.play("game-over.wav");
       }
     } else if (other is Bat) {
       velocity.y = -velocity.y;
       velocity.x =
           velocity.x +
               (position.x - other.position.x) / other.size.x * game.width * 0.3;
+      FlameAudio.play("collide-bat.wav");
     } else if (other is Brick) {
       if (position.y < other.position.y - other.size.y / 2) {
         velocity.y = -velocity.y;

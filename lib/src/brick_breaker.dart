@@ -7,6 +7,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
+import 'package:flame_audio/flame_audio.dart';
 
 import 'components/components.dart';
 import 'config.dart';
@@ -29,6 +30,7 @@ class BrickBreaker extends FlameGame
   final rand = math.Random();
   double get width => size.x;
   double get height => size.y;
+
 
   late PlayState _playState;
   PlayState get playState => _playState;
@@ -62,6 +64,8 @@ class BrickBreaker extends FlameGame
     highScore.value = Hive.box('bricked').get('highScore', defaultValue: 0);
 
     playState = PlayState.welcome;
+    FlameAudio.bgm.initialize();
+
   }
 
   void startGame() {
@@ -74,7 +78,7 @@ class BrickBreaker extends FlameGame
     playState = PlayState.playing;
     score.value = 0;
     newHighScoreAchieved = false;
-
+    FlameAudio.bgm.play("background.mp3");
     world.add(
       Ball(
         difficultyModifier: difficultyModifier,
