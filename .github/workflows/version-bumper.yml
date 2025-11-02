@@ -1,0 +1,70 @@
+name: Bump Version Number
+
+# 1. Trigger the workflow on pushes to the 'master' branch
+on:
+  push:
+    branches: [ "master" ]
+
+# 2. Define the job
+jobs:
+  bump-version:
+    
+    # 3. This "if" condition is CRUCIAL to prevent infinite loops!
+    # It checks if the commit message already contains [skip ci].
+    # The bot's own commit will contain this, so it won't re-trigger itself.
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+
+    # Use the standard Ubuntu runner
+    runs-on: ubuntu-latest
+
+    steps:
+      # 4. Check out your repository's code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 5. This step runs the script to increment the version
+      - name: Bump version
+        run: |
+          PUBSPEC_FILE="pubspec.yaml"
+          
+          # Get the current version line (e.g., "version: 1.0.0+1")
+          VERSION_LINE=$(grep 'version: ' $PUBSPEC_FILE)
+          
+          # Extract the version string (e.g., "1.0.0+1")
+          VERSION=$(echo $VERSION_LINE | cut -d ' ' -f 2)
+          
+          # Get base version (e.g., "1.0.0")
+          BASE_VERSION=$(echo $VERSION | cut -d '+' -f 1)
+          
+          # Get build number (e.g., "1")
+          BUILD_NUMBER=$(echo $VERSION | cut -d '+' -f 2)
+          
+          # Increment the build number
+          NEW_BUILD_NUMBER=$((BUILD_NUMBER + 1))
+          
+          # Create new version string (e.g., "1.0.0+2")
+          NEW_VERSION="$BASE_VERSION+$NEW_BUILD_NUMBER"
+          
+          # Replace the old version line with the new one in pubspec.yaml
+          sed -i "s/version: .*/version: $NEW_VERSION/" $PUBSPEC_FILE
+          
+          # Expose the new version as an environment variable for the next step
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+        shell: bash
+
+      # 6. This step commits the updated pubspec.yaml back to your repo
+      - name: Commit and push changes
+        run: |
+          # Configure the git user for the commit
+          git config --global user.name 'GitHub Actions Bot'
+          git config --global user.email 'github-actions-bot@github.com'
+          
+          # Add the modified file
+          git add pubspec.yaml
+          
+          # Commit the change
+          # We MUST add [skip ci] to the commit message to prevent the loop
+          git commit -m "ci: Bump version to ${{ env.NEW_VERSION }} [skip ci]"
+          
+          # Push the commit
+          git push

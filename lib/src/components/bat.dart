@@ -1,13 +1,11 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
-import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 
 import '../brick_breaker.dart';
 
-class Bat extends PositionComponent
-    with DragCallbacks, HasGameReference<BrickBreaker> {
+class Bat extends PositionComponent with HasGameReference<BrickBreaker> {
   Bat({
     required this.cornerRadius,
     required super.position,
@@ -27,12 +25,6 @@ class Bat extends PositionComponent
       RRect.fromRectAndRadius(Offset.zero & size.toSize(), cornerRadius),
       _paint,
     );
-  }
-
-  @override
-  void onDragUpdate(DragUpdateEvent event) {
-    super.onDragUpdate(event);
-    position.x = (position.x + event.localDelta.x).clamp(0, game.width);
   }
 
   void moveBy(double dx) {
