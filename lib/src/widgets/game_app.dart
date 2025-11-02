@@ -30,8 +30,8 @@ class _GameAppState extends State<GameApp> {
       title: "Bricked!",
       theme: ThemeData(
         textTheme: GoogleFonts.pressStart2pTextTheme().apply(
-          bodyColor: const Color(0xff184e77),
-          displayColor: const Color(0xff184e77),
+          bodyColor: primaryColor,
+          displayColor: primaryColor,
         ),
       ),
       home: Scaffold(

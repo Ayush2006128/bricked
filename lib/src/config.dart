@@ -12,6 +12,8 @@ const brickColors = [                                           // Add this cons
   Color(0xff277da1),
   Color(0xff577590),
 ];
+const primaryColor = Color(0xff184e77);
+const backgroundColor = Color(0xfff2e8cf);
 
 const gameWidth = 820.0;
 const gameHeight = 1600.0;

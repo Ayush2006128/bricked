@@ -6,13 +6,14 @@ import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 
 import '../brick_breaker.dart';
+import '../config.dart';
 import 'bat.dart';
 
 class PlayArea extends RectangleComponent
     with DragCallbacks, HasGameReference<BrickBreaker> {
   PlayArea()
       : super(
-    paint: Paint()..color = const Color(0xfff2e8cf),
+    paint: Paint()..color = backgroundColor,
     children: [RectangleHitbox()],                          // Add this parameter
   );
 
