@@ -56,6 +56,7 @@ class Ball extends CircleComponent
             },
           ),
         );
+        FlameAudio.bgm.stop();
         FlameAudio.play("game-over.wav");
       }
     } else if (other is Bat) {

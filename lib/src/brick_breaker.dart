@@ -64,8 +64,6 @@ class BrickBreaker extends FlameGame
     highScore.value = Hive.box('bricked').get('highScore', defaultValue: 0);
 
     playState = PlayState.welcome;
-    FlameAudio.bgm.initialize();
-
   }
 
   void startGame() {
@@ -78,7 +76,7 @@ class BrickBreaker extends FlameGame
     playState = PlayState.playing;
     score.value = 0;
     newHighScoreAchieved = false;
-    FlameAudio.bgm.play("background.mp3");
+    FlameAudio.bgm.play("background.mp3", volume: 0.7);
     world.add(
       Ball(
         difficultyModifier: difficultyModifier,
