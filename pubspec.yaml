@@ -1,7 +1,7 @@
 name: bricked
 description: "brick"
 publish_to: 'none'
-version: 0.5.0+2
+version: 0.5.7+6
 
 environment:
   sdk: ^3.9.2
