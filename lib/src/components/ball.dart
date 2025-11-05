@@ -3,6 +3,8 @@ import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
+import 'package:vibration/vibration_presets.dart';
 
 import '../brick_breaker.dart';
 import 'bat.dart';
@@ -35,10 +37,10 @@ class Ball extends CircleComponent
   }
 
   @override
-  void onCollisionStart(
+  Future<void> onCollisionStart(
     Set<Vector2> intersectionPoints,
     PositionComponent other,
-  ) {
+  ) async {
     super.onCollisionStart(intersectionPoints, other);
     if (other is PlayArea) {
       if (intersectionPoints.first.y <= 0) {
@@ -57,13 +59,25 @@ class Ball extends CircleComponent
           ),
         );
         FlameAudio.bgm.stop();
-        game.gameOver.start();
+        if (game.gameOver != null){
+        game.gameOver!.start();
+        } else {
+          if (await Vibration.hasVibrator()) {
+            Vibration.vibrate(preset: VibrationPreset.zigZagAlert);
+          }
+        }
       }
     } else if (other is Bat) {
       velocity.y = -velocity.y;
       velocity.x = velocity.x +
           (position.x - other.position.x) / other.size.x * game.width * 0.3;
-      game.batCollision.start();
+      if (game.batCollision != null) {
+        game.batCollision!.start();
+      } else {
+        if (await Vibration.hasVibrator()) {
+          Vibration.vibrate(duration: 50, amplitude: 250);
+        }
+      }
     } else if (other is Brick) {
       if (position.y < other.position.y - other.size.y / 2) {
         velocity.y = -velocity.y;

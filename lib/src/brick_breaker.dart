@@ -31,10 +31,10 @@ class BrickBreaker extends FlameGame
   double get width => size.x;
   double get height => size.y;
 
-  late AudioPool batCollision;
-  late AudioPool brickCollision;
-  late AudioPool gameOver;
-  late AudioPool gameWin;
+  AudioPool? batCollision;
+  AudioPool? brickCollision;
+  AudioPool? gameOver;
+  AudioPool? gameWin;
 
   late PlayState _playState;
   PlayState get playState => _playState;
@@ -68,28 +68,39 @@ class BrickBreaker extends FlameGame
     highScore.value = Hive.box('bricked').get('highScore', defaultValue: 0);
 
     FlameAudio.bgm.initialize();
-    await FlameAudio.audioCache.load("background.mp3");
 
-    batCollision = await FlameAudio.createPool(
-      'collide-bat.wav',
-      minPlayers: 1,
-      maxPlayers: 4,
-    );
-    brickCollision = await FlameAudio.createPool(
-      'collide-brick.wav',
-      minPlayers: 1,
-      maxPlayers: 4,
-    );
-    gameOver = await FlameAudio.createPool(
-      'game-over.wav',
-      minPlayers: 1,
-      maxPlayers: 1,
-    );
-    gameWin = await FlameAudio.createPool(
-      'win.wav',
-      minPlayers: 1,
-      maxPlayers: 1,
-    );
+    try {
+      await FlameAudio.audioCache.loadAll([
+        'background.mp3',
+        'collide-bat.wav',
+        'collide-brick.wav',
+        'game-over.wav',
+        'win.wav',
+      ]);
+
+      batCollision = await FlameAudio.createPool(
+        'collide-bat.wav',
+        minPlayers: 1,
+        maxPlayers: 4,
+      );
+      brickCollision = await FlameAudio.createPool(
+        'collide-brick.wav',
+        minPlayers: 1,
+        maxPlayers: 4,
+      );
+      gameOver = await FlameAudio.createPool(
+        'game-over.wav',
+        minPlayers: 1,
+        maxPlayers: 2,
+      );
+      gameWin = await FlameAudio.createPool(
+        'win.wav',
+        minPlayers: 1,
+        maxPlayers: 2,
+      );
+    } catch (e) {
+      // Sounds failed to load
+    }
 
     playState = PlayState.welcome;
   }
