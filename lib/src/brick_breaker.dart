@@ -26,6 +26,7 @@ class BrickBreaker extends FlameGame
 
   final ValueNotifier<int> score = ValueNotifier(0);
   final ValueNotifier<int> highScore = ValueNotifier(0);
+  final ValueNotifier<int> lives = ValueNotifier(3);
   bool newHighScoreAchieved = false;
   final rand = math.Random();
   double get width => size.x;
@@ -114,6 +115,7 @@ class BrickBreaker extends FlameGame
 
     playState = PlayState.playing;
     score.value = 0;
+    lives.value = 3;
     newHighScoreAchieved = false;
     FlameAudio.bgm.play("background.mp3", volume: 0.7);
     world.add(
@@ -148,6 +150,26 @@ class BrickBreaker extends FlameGame
             color: brickColors[i],
           ),
     ]);
+  }
+
+  void onBallLost() {
+    lives.value--;
+    if (lives.value > 0) {
+      world.add(
+        Ball(
+          difficultyModifier: difficultyModifier,
+          radius: ballRadius,
+          position: size / 2,
+          velocity: Vector2(
+            (rand.nextDouble() - 0.5) * width,
+            height * 0.2,
+          ).normalized()
+            ..scale(height / 4),
+        ),
+      );
+    } else {
+      playState = PlayState.gameOver;
+    }
   }
 
   @override

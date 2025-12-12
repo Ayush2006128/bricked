@@ -54,16 +54,18 @@ class Ball extends CircleComponent
           RemoveEffect(
             delay: 0.35,
             onComplete: () {
-              game.playState = PlayState.gameOver;
+              game.onBallLost();
             },
           ),
         );
-        FlameAudio.bgm.stop();
-        if (game.gameOver != null){
-        game.gameOver!.start();
-        } else {
-          if (await Vibration.hasVibrator()) {
-            Vibration.vibrate(preset: VibrationPreset.zigZagAlert);
+        if (game.lives.value <= 1) {
+          FlameAudio.bgm.stop();
+          if (game.gameOver != null) {
+            game.gameOver!.start();
+          } else {
+            if (await Vibration.hasVibrator()) {
+              Vibration.vibrate(preset: VibrationPreset.zigZagAlert);
+            }
           }
         }
       }

@@ -1,7 +1,7 @@
 name: bricked
 description: "brick"
 publish_to: 'none'
-version: 0.5.7+6
+version: 0.6.1+1
 
 environment:
   sdk: ^3.9.2
@@ -30,6 +30,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/audio/
+    - shorebird.yaml
 
 flutter_native_splash:
   color: "#ffffff"
