@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:flame_audio/flame_audio.dart';
+import 'package:vibration/vibration.dart';
+import 'package:vibration/vibration_presets.dart';
 
 import 'components/components.dart';
 import 'config.dart';
@@ -27,6 +29,7 @@ class BrickBreaker extends FlameGame
   final ValueNotifier<int> score = ValueNotifier(0);
   final ValueNotifier<int> highScore = ValueNotifier(0);
   final ValueNotifier<int> lives = ValueNotifier(3);
+  int bricksRemaining = 0;
   bool newHighScoreAchieved = false;
   final rand = math.Random();
   double get width => size.x;
@@ -117,6 +120,7 @@ class BrickBreaker extends FlameGame
     score.value = 0;
     lives.value = 3;
     newHighScoreAchieved = false;
+    bricksRemaining = brickColors.length * 5;
     FlameAudio.bgm.play("background.mp3", volume: 0.7);
     world.add(
       Ball(
@@ -198,4 +202,20 @@ class BrickBreaker extends FlameGame
 
   @override
   Color backgroundColor() => const Color(0xfff2e8cf);
+
+  Future<void> onBrickBroken() async {
+    bricksRemaining--;
+    if (bricksRemaining <= 0) {
+      playState = PlayState.won;
+      try {
+        await gameWin?.start();
+      } catch (e) {
+        if (await Vibration.hasVibrator()) {
+          Vibration.vibrate(preset: VibrationPreset.doubleBuzz);
+        }
+      }
+      world.removeAll(world.children.query<Ball>());
+      world.removeAll(world.children.query<Bat>());
+    }
+  }
 }

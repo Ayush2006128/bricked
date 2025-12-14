@@ -2,11 +2,8 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
-import 'package:vibration/vibration_presets.dart';
 import '../brick_breaker.dart';
 import '../config.dart';
-import 'ball.dart';
-import 'bat.dart';
 
 class Brick extends RectangleComponent
     with CollisionCallbacks, HasGameReference<BrickBreaker> {
@@ -35,18 +32,6 @@ class Brick extends RectangleComponent
         Vibration.vibrate(duration: 50, amplitude: 250);
       }
     }
-
-    if (game.world.children.query<Brick>().isEmpty) {
-      game.playState = PlayState.won;
-      try {
-        await game.gameWin?.start();
-      } catch (e) {
-        if (await Vibration.hasVibrator()) {
-          Vibration.vibrate(preset: VibrationPreset.doubleBuzz);
-        }
-      }
-      game.world.removeAll(game.world.children.query<Ball>());
-      game.world.removeAll(game.world.children.query<Bat>());
-    }
+    game.onBrickBroken();
   }
 }
