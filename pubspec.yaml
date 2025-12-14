@@ -30,7 +30,6 @@ flutter:
   assets:
     - assets/icons/
     - assets/audio/
-    - shorebird.yaml
 
 flutter_native_splash:
   color: "#ffffff"
