@@ -19,12 +19,12 @@ enum PlayState { welcome, playing, gameOver, won }
 class BrickBreaker extends FlameGame
     with HasCollisionDetection, KeyboardEvents, TapCallbacks {
   BrickBreaker()
-      : super(
-          camera: CameraComponent.withFixedResolution(
-            width: gameWidth,
-            height: gameHeight,
-          ),
-        );
+    : super(
+        camera: CameraComponent.withFixedResolution(
+          width: gameWidth,
+          height: gameHeight,
+        ),
+      );
 
   final ValueNotifier<int> score = ValueNotifier(0);
   final ValueNotifier<int> highScore = ValueNotifier(0);
@@ -130,8 +130,7 @@ class BrickBreaker extends FlameGame
         velocity: Vector2(
           (rand.nextDouble() - 0.5) * width,
           height * 0.2,
-        ).normalized()
-          ..scale(height / 4),
+        ).normalized()..scale(height / 4),
       ),
     );
 
@@ -167,8 +166,7 @@ class BrickBreaker extends FlameGame
           velocity: Vector2(
             (rand.nextDouble() - 0.5) * width,
             height * 0.2,
-          ).normalized()
-            ..scale(height / 4),
+          ).normalized()..scale(height / 4),
         ),
       );
     } else {

@@ -1,11 +1,8 @@
+import 'package:bricked/src/config.dart';
 import 'package:flutter/material.dart';
 
 class ScoreCard extends StatelessWidget {
-  const ScoreCard({
-    super.key,
-    required this.score,
-    required this.lives,
-  });
+  const ScoreCard({super.key, required this.score, required this.lives});
 
   final ValueNotifier<int> score;
   final ValueNotifier<int> lives;
@@ -38,7 +35,7 @@ class ScoreCard extends StatelessWidget {
                           height: 16,
                           decoration: BoxDecoration(
                             color: index < lives
-                                ? const Color(0xff1e6091)
+                                ? ballColor
                                 : Colors.transparent,
                             shape: BoxShape.circle,
                             border: Border.all(

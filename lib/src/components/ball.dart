@@ -1,3 +1,4 @@
+import 'package:bricked/src/config.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -7,9 +8,7 @@ import 'package:vibration/vibration.dart';
 import 'package:vibration/vibration_presets.dart';
 
 import '../brick_breaker.dart';
-import 'bat.dart';
-import 'brick.dart';
-import 'play_area.dart';
+import 'components.dart';
 
 class Ball extends CircleComponent
     with CollisionCallbacks, HasGameReference<BrickBreaker> {
@@ -19,13 +18,13 @@ class Ball extends CircleComponent
     required double radius,
     required this.difficultyModifier,
   }) : super(
-          radius: radius,
-          anchor: Anchor.center,
-          paint: Paint()
-            ..color = const Color(0xff1e6091)
-            ..style = PaintingStyle.fill,
-          children: [CircleHitbox()],
-        );
+         radius: radius,
+         anchor: Anchor.center,
+         paint: Paint()
+           ..color = ballColor
+           ..style = PaintingStyle.fill,
+         children: [CircleHitbox()],
+       );
 
   final Vector2 velocity;
   final double difficultyModifier;
@@ -71,7 +70,8 @@ class Ball extends CircleComponent
       }
     } else if (other is Bat) {
       velocity.y = -velocity.y;
-      velocity.x = velocity.x +
+      velocity.x =
+          velocity.x +
           (position.x - other.position.x) / other.size.x * game.width * 0.3;
       if (game.batCollision != null) {
         game.batCollision!.start();

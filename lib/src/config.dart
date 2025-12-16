@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';                         // Add this import
+import 'package:flutter/material.dart'; // Add this import
 
-const brickColors = [                                           // Add this const
+const brickColors = [
+  // Add this const
   Color(0xfff94144),
   Color(0xfff3722c),
   Color(0xfff8961e),
@@ -20,8 +21,9 @@ const gameHeight = 1600.0;
 const ballRadius = gameWidth * 0.02;
 const batWidth = gameWidth * 0.2;
 const batHeight = ballRadius * 2;
+const ballColor = Color.fromARGB(255, 153, 71, 5);
 const batStep = gameWidth * 0.05;
-const brickGutter = gameWidth * 0.015;                          // Add from here...
+const brickGutter = gameWidth * 0.015; // Add from here...
 final brickWidth =
     (gameWidth - (brickGutter * (brickColors.length + 1))) / brickColors.length;
 const brickHeight = gameHeight * 0.03;
